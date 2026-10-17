@@ -27,7 +27,7 @@ $LogFile    = Join-Path $PSScriptRoot "hand-back-boot.log"
 
 function Say($m){ $m | Out-File $LogFile -Append -Encoding utf8; Write-Host $m }
 function Fail($m){ Say "FAIL - $m"; exit 1 }
-Start-Transcript -Path $LogFile -Force | Out-Null
+"=== hand-back-boot started $(Get-Date) ===" | Out-File $LogFile -Encoding utf8
 Say "=== hand-back-boot started $(Get-Date) ==="
 
 # --- Gate 1: locate EFI by GUID -------------------------------------------------
@@ -110,4 +110,3 @@ Say "OK - EFI unmounted."
 Say "=== hand-back-boot done ==="
 Say "NEXT: reboot. Windows must start directly with NO grub menu."
 Say "Only if that works, run delete-partition.ps1."
-Stop-Transcript | Out-Null

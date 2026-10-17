@@ -70,6 +70,21 @@ The agent's sandbox cannot run diskpart/bcdedit even with
 self-elevating `.bat` (run-as-admin.bat) so the user double-clicks -> UAC ->
 runs as admin. Never assume the agent can execute these live.
 
+## Gotcha 6: never use Start-Transcript on the same log file as Out-File
+
+A script that both calls `Start-Transcript -Path $LogFile` AND writes to the
+same `$LogFile` via `Out-File -Append` (e.g. inside a `Say` helper) will fail
+with "The process cannot access the file because it is being used by another
+process" on the very first `Say`. With `$ErrorActionPreference='Stop'` this
+aborts the whole script before it does anything -- the disk is left untouched
+(safe), but the user gets a confusing error and the op never runs.
+
+Fix: pick ONE logging mechanism. Here we drop `Start-Transcript` entirely and
+let the `Say` helper own the log: it writes each line with `Out-File -Append`,
+and the script resets the file once at startup with a plain `Out-File` (no
+`-Append`) so each run starts clean. The `.log` file is then the single source
+of truth for what actually happened.
+
 ## Optional cosmetic cleanup after success
 
 - `{bootmgr}` description may still read "ubuntu" -- harmless. Fix with

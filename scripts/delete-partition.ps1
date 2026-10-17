@@ -21,7 +21,7 @@ $LogFile    = Join-Path $PSScriptRoot "delete-partition.log"
 
 function Say($m){ $m | Out-File $LogFile -Append -Encoding utf8; Write-Host $m }
 function Fail($m){ Say "FAIL - $m"; exit 1 }
-Start-Transcript -Path $LogFile -Force | Out-Null
+"=== delete-partition started $(Get-Date) ===" | Out-File $LogFile -Encoding utf8
 Say "=== delete-partition started $(Get-Date) ==="
 
 # --- show the real partition table (diskpart view) as a sanity reference -------
@@ -69,4 +69,3 @@ Get-Partition | Select-Object PartitionNumber,Type,@{n='GB';e={[math]::Round($_.
 Say "Check diskmgmt.msc - the freed space should show as Unallocated."
 Say "Leave it unallocated; a fresh Linux installer will use it."
 Say "=== delete-partition done ==="
-Stop-Transcript | Out-Null
