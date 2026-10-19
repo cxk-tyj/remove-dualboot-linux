@@ -111,7 +111,12 @@ Freed space shows as **Unallocated** in diskmgmt.msc — leave it for the new OS
 - `gotchas.md` — the hard-won lessons that shaped this skill: why verification
   must precede action, the diskpart-vs-WMI partition-number offset (MSR is
   hidden), Ubuntu hijacking `{bootmgr}`, bcdedit quoting in PowerShell, the
-  non-negotiable reboot gate, and that the agent cannot run diskpart itself.
+  non-negotiable reboot gate, that the agent cannot run diskpart itself, **and
+  (added later) the boot-order / GRUB-visibility war after a Linux reinstall**:
+  Windows self-promoting to BootOrder #1 every cold boot, AMI Boot-Option
+  dropdown folding per disk, firmware Fast Boot hiding entries, the
+  fallback-`EFI/BOOT/bootx64.efi` + delete-Windows-NVRAM-entry fix, and
+  `GRUB_DISABLE_OS_PROBER=false` for Windows to show in GRUB.
 
 ## Hard rules (do not violate)
 
